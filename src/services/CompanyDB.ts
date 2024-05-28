@@ -7,21 +7,26 @@ interface Company extends RowDataPacket {
   logo_link: string;
 }
 
+interface TotalCompanies extends RowDataPacket {
+  total_companies: number;
+}
+
 export const getCompanies = async (sort: string, pagination: string) => {
   try {
-    /*
-    0 - 0
-    1 - 9
-    2 - 19
-    3 - 29
-    4 - 39
-    5 - 49
-    */
     const pages: number = Number(pagination);
-    const page = pages === 0 ? 0 : pages * 10 - 1;
-    const query = `SELECT company_id, name, logo_link FROM company ORDER BY company_id limit ${page}, 10`;
 
-    const [data] = await db.query<Company[]>(query);
+    const totalRowsQuery = 'SELECT count(*) as total_companies FROM company;';
+    const companiesQuery = `SELECT company_id, name, logo_link FROM company ORDER BY company_id limit ${pages * 10}, 10;`;
+
+    const [companiesResult] = await db.query<Company[]>(companiesQuery);
+    const [totalRowsResult] = await db.query<TotalCompanies[]>(totalRowsQuery);
+    
+    const totalRows = totalRowsResult[0].total_companies;
+
+    const data = {
+      companies: companiesResult,
+      length: totalRows
+    }
 
     return data;
   } catch (err) {
