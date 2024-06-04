@@ -1,11 +1,15 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors, { CorsOptions } from 'cors';
+import morgan from 'morgan';
+import helmet from 'helmet';
+
+import router from './routes/index';
 
 import { errorHandler } from './middlewares/error-handler';
-import { companyRouter } from './routes/company';
-import { searchRouter } from './routes/search';
 
 const app = express();
+
+app.use(express.json());
 
 app.use(
   (req: Request, res: Response, next: NextFunction) => {
@@ -14,8 +18,12 @@ app.use(
   cors({ maxAge: 84500 })
 );
 
-app.use(companyRouter);
-app.use(searchRouter);
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
+
+router(app);
+
+
+app.use(helmet);
 
 app.use(errorHandler);
 
