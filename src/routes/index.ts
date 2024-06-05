@@ -1,6 +1,6 @@
 import express, { Application, Router } from 'express';
 
-import company from '../controllers/company';
+import company from '../controllers/company.controller';
 
 function routerApi(app: Application) {
   const router: Router = express.Router();

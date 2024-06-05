@@ -1,7 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
-import cors, { CorsOptions } from 'cors';
+import cors from 'cors';
 import morgan from 'morgan';
-import helmet from 'helmet';
 
 import router from './routes/index';
 
@@ -23,7 +22,6 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 router(app);
 
 
-app.use(helmet);
 
 app.use(errorHandler);
 

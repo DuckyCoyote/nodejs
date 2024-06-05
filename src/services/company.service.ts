@@ -1,19 +1,22 @@
 import { RowDataPacket } from 'mysql2';
 import { db } from '../db/config';
 
-import CompanyQuery from './db/CompanyQuerys';
+import {
+  Companies,
+  SectorDb,
+  ContactDb,
+  AllianceDb,
+  MarketDb,
+  MercadoDb,
+  InvestorDb,
+  Company,
+  CompanyDb,
+  TotalCompanies,
+  CompanyTable,
+} from './typos/company.typos';
+import CompanyQuery from './querys/company.querys';
 
-interface Company extends RowDataPacket {
-  company_id: number;
-  name: string;
-  logo_link: string;
-  company_founders: string;
-}
-
-interface TotalCompanies extends RowDataPacket {
-  total_companies: number;
-}
-class CompanyDB {
+class CompanyService {
   async getCompanies(sort: string, pagination: string) {
     try {
       /*
@@ -24,7 +27,7 @@ class CompanyDB {
       /*
        * Get companies and total of companies from DB
        */
-      const [companiesResult] = await db.query<Company[]>(CompanyQuery.getCompanies(pages));
+      const [companiesResult] = await db.query<Companies[]>(CompanyQuery.getCompanies(pages));
       const [totalRowsResult] = await db.query<TotalCompanies[]>(CompanyQuery.getTotalCompanies());
 
       const totalRows = totalRowsResult[0].total_companies;
@@ -42,7 +45,7 @@ class CompanyDB {
 
   async getCompany(companyId: string) {
     try {
-      const [companyResult] = await db.query<Company[]>(CompanyQuery.getCompany(), [companyId]);
+      const [companyResult] = await db.query<CompanyDb[]>(CompanyQuery.getCompany(), [companyId]);
 
       /*
        * This block splits the founders in an Array of strings
@@ -51,15 +54,17 @@ class CompanyDB {
        */
       let founders;
       if (companyResult[0].company_founders && companyResult[0].company_founders.length > 0) {
-        const splitFounders: string[] = companyResult[0].company_founders.split(',');
-        founders = { company_founders: splitFounders };
+        if (typeof companyResult[0].company_founders === 'string') {
+          const splitFounders: string[] = companyResult[0].company_founders.split(',');
+          founders = { company_founders: splitFounders };
+        }
       }
 
       /*
        * Get sectors from DB
        * @example returns "sectors": [{ "sector_id": 145, "sector": "Empresa, TI & Datos", "industria_id": 7, "industry": "Software" }]
        */
-      const [sectorsResult] = await db.query<RowDataPacket[]>(CompanyQuery.getSectors(), [
+      const [sectorsResult] = await db.query<SectorDb[]>(CompanyQuery.getSectors(), [
         companyId,
         companyId,
       ]);
@@ -68,7 +73,7 @@ class CompanyDB {
        * Get technologies from DB
        * @example returns [{ market_id: 145, tech: 'Inteligencia artificial', tech2_id: 4, subtech: 'Diseo conversacional' }]
        */
-      const [technologiesResult] = await db.query<RowDataPacket[]>(
+      const [technologiesResult] = await db.query<MarketDb[]>(
         CompanyQuery.getCompanyTechnologies(),
         [companyId, companyId]
       );
@@ -77,7 +82,7 @@ class CompanyDB {
        * Get markets from DB
        * @example returns [ { mercado_id: 5, name: 'Empresarial & profesional' } ]
        */
-      const [marketsResult] = await db.query<RowDataPacket[]>(CompanyQuery.getCompanyMarkets(), [
+      const [marketsResult] = await db.query<MercadoDb[]>(CompanyQuery.getCompanyMarkets(), [
         companyId,
       ]);
 
@@ -85,16 +90,15 @@ class CompanyDB {
        * Get inverstors from DB
        * @example returns [ { investor_id: 40, name: 'Sequoia Capital' } ]
        */
-      const [investorsResult] = await db.query<RowDataPacket[]>(
-        CompanyQuery.getCompanyInvestors(),
-        [companyId]
-      );
+      const [investorsResult] = await db.query<InvestorDb[]>(CompanyQuery.getCompanyInvestors(), [
+        companyId,
+      ]);
 
       /*
        * Get investors from DB
        * @example returns
        */
-      const [contactsResult] = await db.query<RowDataPacket[]>(CompanyQuery.getCompanyContacts(), [
+      const [contactsResult] = await db.query<ContactDb[]>(CompanyQuery.getCompanyContacts(), [
         companyId,
       ]);
 
@@ -102,12 +106,11 @@ class CompanyDB {
        * Get alliances from DB
        * @example returns
        */
-      const [alliancesResult] = await db.query<RowDataPacket[]>(
-        CompanyQuery.getCompanyAlliances(),
-        [companyId]
-      );
+      const [alliancesResult] = await db.query<AllianceDb[]>(CompanyQuery.getCompanyAlliances(), [
+        companyId,
+      ]);
 
-      const company = {
+      const company: { company: Company } = {
         company: {
           ...companyResult[0],
           ...founders,
@@ -127,8 +130,8 @@ class CompanyDB {
   }
 
   /*
-  * Get all the optios to form of Create Company
-  */
+   * Get all the optios to form of Create Company
+   */
   async getFounders(companyId: string) {
     try {
       const [founderResult] = await db.query<RowDataPacket[]>(CompanyQuery.getFounders(), [
@@ -227,4 +230,4 @@ class CompanyDB {
   }
 }
 
-export default CompanyDB;
+export default CompanyService;

@@ -7,6 +7,10 @@ class CompanyQuery {
     return `SELECT * FROM ${row} ;`;
   }
 
+  static getTableOrder(table: string) {
+    return `SELECT * FROM ${table} ORDER BY trim(name);`;
+  }
+
   static getCompanies(pages: number): string {
     return `SELECT company_id, name, logo_link FROM company ORDER BY company_id limit ${pages * 10}, 10;`;
   }
@@ -97,10 +101,6 @@ class CompanyQuery {
       SELECT id_founder, company_id, position, descripcion_founders, url_linkedin, email, url_photo, name_founder
       FROM founders
       WHERE company_id = ?;`;
-  }
-
-  static getTableOrder(table: string) {
-    return `SELECT * FROM ${table} ORDER BY trim(name);`;
   }
 
   static getIndustries() {

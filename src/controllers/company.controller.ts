@@ -3,10 +3,10 @@ import { body, query, validationResult } from 'express-validator';
 import { RequestValidationError } from '../errors/request-validation-error';
 import { DatabaseConnectionError } from '../errors/database-connection-error';
 
-import CompanyDB from '../services/CompanyDB';
+import CompanyService from '../services/company.service';
 
 const router = express.Router();
-const company = new CompanyDB();
+const company = new CompanyService();
 
 router.post(
   '/auth',
