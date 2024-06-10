@@ -29,12 +29,7 @@ router.post(
 
 router.get(
   '/get-companiesv2',
-  [
-    query('pagination')
-      .notEmpty()
-      .withMessage('Parameters are missing')
-      .trim(),
-  ],
+  [query('pagination').notEmpty().withMessage('Parameters are missing').trim()],
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const errors = validationResult(req);
@@ -98,7 +93,7 @@ router.get('/get-mercados', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/get-industries', async (req: Request, res: Response) => {
+router.get('/get-industrias', async (req: Request, res: Response) => {
   try {
     const { sectorId } = req.query;
     const data = await company.getIndustries(sectorId as string);
@@ -127,4 +122,61 @@ router.get('/get-subtechnology', async (req: Request, res: Response) => {
   }
 });
 
+router.post(
+  '/create-company',
+  [
+    body('name').notEmpty().withMessage('name is required').isString().trim().isAlphanumeric(),
+    body('logo_link').notEmpty().withMessage('logo_link is required').isString().trim().isURL(),
+    body('ilustration_link')
+      .notEmpty()
+      .withMessage('ilustration_link is required')
+      .isString()
+      .trim()
+      .isURL(),
+    body('description')
+      .notEmpty()
+      .withMessage('description is required')
+      .isString()
+      .trim()
+      .isAlphanumeric(),
+    body('size').notEmpty().withMessage('size is required').isNumeric().trim(),
+    body('sede').notEmpty().withMessage('sede is required').isString().trim().isAlphanumeric(),
+    body('founders').notEmpty().withMessage('founders is required').isArray(),
+    body('sector').notEmpty().withMessage('sector is required').isArray(),
+    body('industry').notEmpty().withMessage('industry is required').isString().trim(),
+    body('market').notEmpty().withMessage('market is required').isArray(),
+    body('tech').notEmpty().withMessage('tech is required').isString().trim().isAlphanumeric(),
+    body('mercado').notEmpty().withMessage('mercado is required').isString().trim(),
+    body('opportunities')
+      .notEmpty()
+      .withMessage('opportunities is required')
+      .isString()
+      .trim()
+      .isAlphanumeric(),
+    body('web_url').notEmpty().withMessage('web_url is required').isString().trim().isURL(),
+    body('contact_user_id')
+      .notEmpty()
+      .withMessage('contact_user_id is required')
+      .isNumeric()
+      .trim(),
+    body('register_user_id')
+      .notEmpty()
+      .withMessage('register_user_id is required')
+      .isNumeric()
+      .trim(),
+  ],
+  async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body);
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        throw new RequestValidationError(errors.array());
+      }
+      console.log(req.body);
+      res.sendStatus(200);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 export default router;

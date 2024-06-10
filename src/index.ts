@@ -8,20 +8,21 @@ import { errorHandler } from './middlewares/error-handler';
 
 const app = express();
 
-app.use(express.json());
+const options: cors.CorsOptions = {
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'X-Access-Token'],
+  credentials: true,
+  methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
+  origin: 'http://localhost:3500/',
+  preflightContinue: false,
+};
 
-app.use(
-  (req: Request, res: Response, next: NextFunction) => {
-    next();
-  },
-  cors({ maxAge: 84500 })
-);
+app.use(cors(options));
+
+app.use(express.json());
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
 
 router(app);
-
-
 
 app.use(errorHandler);
 
