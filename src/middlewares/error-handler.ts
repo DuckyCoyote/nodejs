@@ -4,6 +4,7 @@ import { DatabaseConnectionError } from '../errors/database-connection-error';
 
 export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof RequestValidationError) {
+    console.log(err);
     return res.status(err.statusCode).json({ errors: err.serializeErrors() });
   }
 

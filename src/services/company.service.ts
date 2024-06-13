@@ -12,7 +12,6 @@ import {
   Company,
   CompanyDb,
   TotalCompanies,
-  CompanyTable,
 } from './typos/company.typos';
 import CompanyQuery from './querys/company.querys';
 

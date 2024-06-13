@@ -1,9 +1,14 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { body, query, validationResult } from 'express-validator';
+
+import CompanySchema from '../schemas/company.schema';
 import { RequestValidationError } from '../errors/request-validation-error';
 import { DatabaseConnectionError } from '../errors/database-connection-error';
 
 import CompanyService from '../services/company.service';
+import { ObjectFlags } from 'typescript';
+import { CompanyTable } from '../services/typos/company.typos';
+import { isArray } from 'util';
 
 const router = express.Router();
 const company = new CompanyService();
@@ -124,55 +129,31 @@ router.get('/get-subtechnology', async (req: Request, res: Response) => {
 
 router.post(
   '/create-company',
-  [
-    body('name').notEmpty().withMessage('name is required').isString().trim().isAlphanumeric(),
-    body('logo_link').notEmpty().withMessage('logo_link is required').isString().trim().isURL(),
-    body('ilustration_link')
-      .notEmpty()
-      .withMessage('ilustration_link is required')
-      .isString()
-      .trim()
-      .isURL(),
-    body('description')
-      .notEmpty()
-      .withMessage('description is required')
-      .isString()
-      .trim()
-      .isAlphanumeric(),
-    body('size').notEmpty().withMessage('size is required').isNumeric().trim(),
-    body('sede').notEmpty().withMessage('sede is required').isString().trim().isAlphanumeric(),
-    body('founders').notEmpty().withMessage('founders is required').isArray(),
-    body('sector').notEmpty().withMessage('sector is required').isArray(),
-    body('industry').notEmpty().withMessage('industry is required').isString().trim(),
-    body('market').notEmpty().withMessage('market is required').isArray(),
-    body('tech').notEmpty().withMessage('tech is required').isString().trim().isAlphanumeric(),
-    body('mercado').notEmpty().withMessage('mercado is required').isString().trim(),
-    body('opportunities')
-      .notEmpty()
-      .withMessage('opportunities is required')
-      .isString()
-      .trim()
-      .isAlphanumeric(),
-    body('web_url').notEmpty().withMessage('web_url is required').isString().trim().isURL(),
-    body('contact_user_id')
-      .notEmpty()
-      .withMessage('contact_user_id is required')
-      .isNumeric()
-      .trim(),
-    body('register_user_id')
-      .notEmpty()
-      .withMessage('register_user_id is required')
-      .isNumeric()
-      .trim(),
-  ],
+  CompanySchema,
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.body);
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         throw new RequestValidationError(errors.array());
       }
-      console.log(req.body);
+      const body: CompanyTable = req.body;
+      const founders: string = ""
+      console.log(body.name);  
+      // const data: string[] = [
+      //   body.name,
+      //   body.register_user_id,
+      //   body.contact_user_id,
+      //   body.approach || '',
+      //   body.logo_link,
+      //   body.description,
+      //   body.company_size,
+      //   body.entry || '',
+      //   body.facebook_url || '',
+      //   body.twitter_url || '',
+      //   body.linkedin_url || '',
+      //   body.website_url,
+      // ] 
+      // console.log(data);
       res.sendStatus(200);
     } catch (error) {
       next(error);

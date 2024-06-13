@@ -59,44 +59,39 @@ export interface Alliance {
 export interface AllianceDb extends RowDataPacket, Alliance {}
 
 export interface CompanyTable {
-  company_id: number; // int, NO, PRI, auto_increment
-  register_user_id: number; // int, NO, MUL
-  contact_user_id: number; // int, NO, MUL
-  name: string | null; // varchar(255), YES
-  logo_link: string | null; // varchar(255), YES
-  description: string | null; // text, YES
-  funding: string | null; // varchar(255), YES
-  entry: string | null; // varchar(255), YES
-  approach: string; // char(1), NO
-  facebook_url: string | null; // varchar(255), YES
-  twitter_url: string | null; // varchar(255), YES
-  linkedin_url: string | null; // varchar(255), YES
-  website_url: string | null; // varchar(255), YES
-  company_size: number | null; // int, YES
-  company_founders: string | string[] | null; // mediumtext, YES
-  country_id: number | null; // int, YES
-  opportunities: string | null; // text, YES
-  valuation: string; // varchar(255), YES, default '0'
-  video_url: string | null; // varchar(255), YES
-  created_at: string; // timestamp, YES, default CURRENT_TIMESTAMP
-  updated_at: string; // datetime, YES, default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
-  instagram_url: string | null; // varchar(255), YES
-  youtube_url: string | null; // varchar(255), YES
-  views: number; // int, YES, default 0
-  date_inactive: number | null; // year, YES
   activo: string; // char(1), YES, default '1'
-  foundation: number | null; // year, YES
+  company_id: number; // int, NO, PRI, auto_increment
+  name: string; // varchar(255), YES
+  foundation: string; // year, YES
+  logo_link: string; // varchar(255), YES
   ilustration_link: string; // varchar(255), NO
-  founders_length: number;
+  description: string; // text, YES 
+  company_size: string; // int, YES
+  country_id: string; // int, YES
   sede: string;
-  company_size_cad: number;
+  company_founders: string | string[]; // mediumtext, YES
+  founders: string;
+  opportunities: string; // text, YES
+  website_url: string; // varchar(255), YES
   contact_cid: string;
-  contact_cid_lastname: string;
-  position: string;
-  descipcion_founders: string;
-  url_linkedin: string;
-  email: string;
-  url_photo: string;
+  contact_user_id: string; // int, NO, MUL
+  register_user_id: string; // int, NO, MUL
+
+  date_inactive?: number | null; // year, YES
+  entry?: string | null; // varchar(255), YES
+  funding?: string | null; // varchar(255), YES
+  valuation?: string; // varchar(255), YES, default '0'
+  linkedin_url?: string | null; // varchar(255), YES
+  youtube_url?: string | null; // varchar(255), YES
+  twitter_url?: string | null; // varchar(255), YES
+  facebook_url?: string | null; // varchar(255), YES
+  instagram_url?: string | null; // varchar(255), YES
+  approach?: string | null; // char(1), NO
+  video_url?: string | null; // varchar(255), YES
+
+  created_at?: string; // timestamp, YES, default CURRENT_TIMESTAMP
+  updated_at?: string; // datetime, YES, default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
+  views?: number; // int, YES, default 0
 }
 export interface CompanyDb extends RowDataPacket, CompanyTable {}
 
@@ -107,4 +102,15 @@ export interface Company extends CompanyTable {
   investors: Investor[];
   contacts: Contact[]; // assuming contacts array is empty
   alliances: Alliance[]; // assuming alliances array is empty
+}
+
+export interface Founders {
+  id_founder: number;
+  company_id: number;
+  position: string;
+  descipcion_founders: string;
+  url_linkedin: string;
+  email: string;
+  url_photo: string;
+  name_founder: string;
 }

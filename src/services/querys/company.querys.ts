@@ -108,14 +108,44 @@ class CompanyQuery {
       SELECT ios.*,i.name
       FROM industries_of_sector ios
         LEFT JOIN industria i ON i.industria_id = ios.industria_id
-        WHERE ios.sector_id = ?  ORDER BY trim(name);`
+        WHERE ios.sector_id = ?  ORDER BY trim(name);`;
   }
 
   static getSubTechnologies() {
     return `
       SELECT tot.*,t.name as Subtechnology
       FROM tech_of_tech tot
-        LEFT JOIN tech2 t ON t.tech2_id = tot.tech2_id WHERE tot.market_id = ? ORDER BY trim(name);`
+        LEFT JOIN tech2 t ON t.tech2_id = tot.tech2_id WHERE tot.market_id = ? ORDER BY trim(name);`;
+  }
+
+  static createCompany() {
+    return `
+      INSERT INTO company (
+        name,
+        register_user_id,
+        contact_user_id,
+        approach,
+        logo_link,
+        description,
+        company_size,
+        entry,
+        facebook_url,
+        twitter_url,
+        linkedin_url,
+        website_url,
+        company_founders,
+        opportunities,
+        valuation,
+        video_url,
+        funding,
+        instagram_url,
+        youtube_url,
+        date_inactive,
+        activo,
+        foundation,
+        ilustration_link )
+      VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+    `;
   }
 }
 
