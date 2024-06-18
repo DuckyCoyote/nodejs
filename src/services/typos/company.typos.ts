@@ -59,7 +59,6 @@ export interface Alliance {
 export interface AllianceDb extends RowDataPacket, Alliance {}
 
 export interface CompanyTable {
-  activo: string; // char(1), YES, default '1'
   company_id: number; // int, NO, PRI, auto_increment
   name: string; // varchar(255), YES
   foundation: string; // year, YES
@@ -76,7 +75,8 @@ export interface CompanyTable {
   contact_cid: string;
   contact_user_id: string; // int, NO, MUL
   register_user_id: string; // int, NO, MUL
-
+  
+  activo: string; // char(1), YES, default '1'
   date_inactive?: number | null; // year, YES
   entry?: string | null; // varchar(255), YES
   funding?: string | null; // varchar(255), YES

@@ -137,23 +137,21 @@ router.post(
         throw new RequestValidationError(errors.array());
       }
       const body: CompanyTable = req.body;
-      const founders: string = ""
-      console.log(body.name);  
-      // const data: string[] = [
-      //   body.name,
-      //   body.register_user_id,
-      //   body.contact_user_id,
-      //   body.approach || '',
-      //   body.logo_link,
-      //   body.description,
-      //   body.company_size,
-      //   body.entry || '',
-      //   body.facebook_url || '',
-      //   body.twitter_url || '',
-      //   body.linkedin_url || '',
-      //   body.website_url,
-      // ] 
-      // console.log(data);
+      const data: string[] = [
+        body.name,
+        body.register_user_id,
+        body.contact_user_id,
+        body.approach || '',
+        body.logo_link,
+        body.description,
+        body.company_size,
+        body.entry || '',
+        body.facebook_url || '',
+        body.twitter_url || '',
+        body.linkedin_url || '',
+        body.website_url,
+      ] 
+      console.log(data);
       res.sendStatus(200);
     } catch (error) {
       next(error);
