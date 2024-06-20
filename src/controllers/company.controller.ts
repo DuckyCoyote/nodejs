@@ -6,9 +6,7 @@ import { RequestValidationError } from '../errors/request-validation-error';
 import { DatabaseConnectionError } from '../errors/database-connection-error';
 
 import CompanyService from '../services/company.service';
-import { ObjectFlags } from 'typescript';
-import { CompanyTable } from '../services/typos/company.typos';
-import { isArray } from 'util';
+import { Company } from '../services/typos/company.typos';
 
 const router = express.Router();
 const company = new CompanyService();
@@ -136,23 +134,39 @@ router.post(
       if (!errors.isEmpty()) {
         throw new RequestValidationError(errors.array());
       }
-      const body: CompanyTable = req.body;
+      const body: Company = req.body;
       const data: string[] = [
         body.name,
-        body.register_user_id,
-        body.contact_user_id,
-        body.approach || '',
+        body.foundation,
         body.logo_link,
+        body.ilustration_link,
         body.description,
         body.company_size,
-        body.entry || '',
-        body.facebook_url || '',
-        body.twitter_url || '',
-        body.linkedin_url || '',
+        body.sede,
+        body.founders,
+        body.opportunities,
         body.website_url,
-      ] 
+        body.contact_cid,
+        body.register_user_id,
+
+        body.activo,
+        body.date_inactive || '',
+        body.entry || '',
+        body.funding || '',
+        body.valuation || '',
+        body.linkedin_url || '',
+        body.youtube_url || '',
+        body.twitter_url || '',
+        body.facebook_url || '',
+        body.instagram_url || '',
+        body.approach || '',
+        body.video_url || '',
+      ]
       console.log(data);
-      res.sendStatus(200);
+      console.log('tech: ' + req.body.tech || '')
+      console.log('markets: ' + req.body.markets || '')
+      console.log(JSON.parse(body.founders))
+      res.status(200).json(data);
     } catch (error) {
       next(error);
     }

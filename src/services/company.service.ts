@@ -12,6 +12,7 @@ import {
   Company,
   CompanyDb,
   TotalCompanies,
+  Mercado,
 } from './typos/company.typos';
 import CompanyQuery from './querys/company.querys';
 
@@ -150,7 +151,7 @@ class CompanyService {
 
   async getSectors() {
     try {
-      const [sectorsResult] = await db.query<RowDataPacket[]>(CompanyQuery.getTableOrder('sector'));
+      const [sectorsResult] = await db.query<SectorDb[]>(CompanyQuery.getTableOrder('sector'));
       return { sectores: sectorsResult };
     } catch (error) {
       console.error(error);
@@ -168,7 +169,7 @@ class CompanyService {
 
   async getMercados() {
     try {
-      const [mercadosResult] = await db.query<RowDataPacket[]>(CompanyQuery.getAll('mercado'));
+      const [mercadosResult] = await db.query<MercadoDb[]>(CompanyQuery.getAll('mercado'));
       return { mercados: mercadosResult };
     } catch (error) {
       console.log(error);

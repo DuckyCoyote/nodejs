@@ -10,7 +10,7 @@ export interface TotalCompanies extends RowDataPacket {
   total_companies: number;
 }
 
-export interface SectorDb extends RowDataPacket, Sector {}
+export interface SectorDb extends RowDataPacket, Sector { }
 
 export interface Sector {
   sector_id: number;
@@ -19,25 +19,30 @@ export interface Sector {
   industry: string;
 }
 
-export interface Market {
+export interface tehc2 { // Tecnologia Secundaria
+  tech2_id: number;
+  name: string;
+}
+
+export interface Market { // Mercados
   market_id: number;
   tech: string;
   tech2_id: number;
   subtech: string;
 }
-export interface MarketDb extends RowDataPacket, Market {}
+export interface MarketDb extends RowDataPacket, Market { }
 
 export interface Mercado {
   mercado_id: number;
   name: string;
 }
-export interface MercadoDb extends RowDataPacket, Mercado {}
+export interface MercadoDb extends RowDataPacket, Mercado { }
 
 export interface Investor {
   investor_id: number;
   name: string;
 }
-export interface InvestorDb extends RowDataPacket, Investor {}
+export interface InvestorDb extends RowDataPacket, Investor { }
 
 export interface Contact {
   contact_id: number; // int, NO, PRI, auto_increment
@@ -50,15 +55,16 @@ export interface Contact {
   projects: string | null; // varchar(255), YES
   role: string | null; // char(1), YES
 }
-export interface ContactDb extends RowDataPacket, Contact {}
+export interface ContactDb extends RowDataPacket, Contact { }
 
 export interface Alliance {
   alliance_id: number;
   name: string;
 }
-export interface AllianceDb extends RowDataPacket, Alliance {}
+export interface AllianceDb extends RowDataPacket, Alliance { }
 
 export interface CompanyTable {
+  activo: string; // char(1), YES, default '1'
   company_id: number; // int, NO, PRI, auto_increment
   name: string; // varchar(255), YES
   foundation: string; // year, YES
@@ -75,9 +81,8 @@ export interface CompanyTable {
   contact_cid: string;
   contact_user_id: string; // int, NO, MUL
   register_user_id: string; // int, NO, MUL
-  
-  activo: string; // char(1), YES, default '1'
-  date_inactive?: number | null; // year, YES
+
+  date_inactive?: string | null; // year, YES
   entry?: string | null; // varchar(255), YES
   funding?: string | null; // varchar(255), YES
   valuation?: string; // varchar(255), YES, default '0'
@@ -93,7 +98,7 @@ export interface CompanyTable {
   updated_at?: string; // datetime, YES, default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
   views?: number; // int, YES, default 0
 }
-export interface CompanyDb extends RowDataPacket, CompanyTable {}
+export interface CompanyDb extends RowDataPacket, CompanyTable { }
 
 export interface Company extends CompanyTable {
   sectors: Sector[];

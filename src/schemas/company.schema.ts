@@ -43,9 +43,8 @@ const CompanySchema: Schema = {
     },
     isString: true,
     trim: true,
-    isAlphanumeric: true,
   },
-  size: {
+  company_size: {
     notEmpty: {
       errorMessage: 'size is required',
     },
@@ -67,7 +66,38 @@ const CompanySchema: Schema = {
     isString: true,
     trim: true,
   },
-  sector: {
+  opportunities: {
+    notEmpty: {
+      errorMessage: 'opportunities is required',
+    },
+    isString: true,
+    trim: true,
+  },
+  website_url: {
+    notEmpty: {
+      errorMessage: 'web_url is required',
+    },
+    isString: true,
+    trim: true,
+    isURL: true,
+  },
+  contact_cid: {
+    notEmpty: {
+      errorMessage: 'contact_user_id is required',
+    },
+    isNumeric: true,
+    trim: true,
+  },
+  register_user_id: {
+    notEmpty: {
+      errorMessage: 'register_user_id is required',
+    },
+    isNumeric: true,
+    trim: true,
+  },
+
+  // Sectores
+  sectors: {
     notEmpty: {
       errorMessage: 'sector is required',
     },
@@ -81,7 +111,7 @@ const CompanySchema: Schema = {
     isString: true,
     trim: true,
   },
-  market: {
+  markets: {
     notEmpty: {
       errorMessage: 'market is required',
     },
@@ -102,36 +132,7 @@ const CompanySchema: Schema = {
     isString: true,
     trim: true,
   },
-  opportunities: {
-    notEmpty: {
-      errorMessage: 'opportunities is required',
-    },
-    isString: true,
-    trim: true,
-    isAlphanumeric: true,
-  },
-  web_url: {
-    notEmpty: {
-      errorMessage: 'web_url is required',
-    },
-    isString: true,
-    trim: true,
-    isURL: true,
-  },
-  contact_user_id: {
-    notEmpty: {
-      errorMessage: 'contact_user_id is required',
-    },
-    isNumeric: true,
-    trim: true,
-  },
-  register_user_id: {
-    notEmpty: {
-      errorMessage: 'register_user_id is required',
-    },
-    isNumeric: true,
-    trim: true,
-  },
+
   // Optional fields
   dateinactive: {
     optional: true,
