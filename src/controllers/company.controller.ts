@@ -162,9 +162,6 @@ router.post(
         body.approach || '',
         body.video_url || '',
       ]
-      console.log(data);
-      console.log('tech: ' + req.body.tech || '')
-      console.log('markets: ' + req.body.markets || '')
       console.log(JSON.parse(body.founders))
       res.status(200).json(data);
     } catch (error) {
