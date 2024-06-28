@@ -29,7 +29,28 @@ router.post(
     res.send({});
   }
 );
-
+/**
+ * @swagger
+ * /get-companiesv2:
+ *   get:
+ *     summary: Obtener listado de compañias
+ *     tags:
+ *       - Companies
+ *     parameters:
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *         description: Opción de ordenamiento
+ *       - in: query
+ *         name: pagination
+ *         schema:
+ *           type: string
+ *         description: Parámetros de paginación
+ *     responses:
+ *       200:
+ *         description: Listado obtenido con éxito
+ */
 router.get(
   '/get-companiesv2',
   [query('pagination').notEmpty().withMessage('Parameters are missing').trim()],
@@ -47,6 +68,18 @@ router.get(
     }
   }
 );
+/**
+ * @swagger
+ * /get-companiesv2
+ *   get:
+ *     summary: Obtener listado de compañias
+ *     tags: 
+ *       - sort
+ *       - pagination
+ *     responses:
+ *       200:
+ *         description: Listado obtenido con exito
+*/
 
 router.get('/get-company', async (req: Request, res: Response) => {
   const { companyId } = req.query;
